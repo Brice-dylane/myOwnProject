@@ -259,7 +259,7 @@
                 </div>
                 <form>
                     <div class="modal-body">
-                        <input type="text" value="insert" name="envent" style="display: none;">
+                        <input type="text" value="update" name="event" style="display: none;">
                         <div class="form-group">
                             <label for="iname" class="col-form-label">Nom:</label>
                             <input type="text" class="form-control" name="inom" id="iname">
