@@ -8,15 +8,17 @@ public class Produit {
     private String nom;
     private int id_type;
     private int id_categorie;
+    private String type;
+    private String categorie;
     private int prix_achat;
     private int prix_vente;
-    private char isActive;
-    private LocalDate date;
+    private String isActive;
+    private LocalDate cree_le;
 
     public Produit() {
     }
 
-    public Produit(int id, String nom, int id_type, int id_categorie, int prix_achat, int prix_vente, char isActive, LocalDate date) {
+    public Produit(int id, String nom, int id_type, int id_categorie, int prix_achat, int prix_vente, String isActive, LocalDate cree_le) {
         this.id = id;
         this.nom = nom;
         this.id_type = id_type;
@@ -24,7 +26,43 @@ public class Produit {
         this.prix_achat = prix_achat;
         this.prix_vente = prix_vente;
         this.isActive = isActive;
-        this.date = date;
+        this.cree_le = cree_le;
+    }
+
+    public Produit(String nom, int prix_vente,int prix_achat,String isActive, int id_type, int id_categorie,LocalDate cree_le) {
+        this.nom = nom;
+        this.prix_vente = prix_vente;
+        this.prix_achat = prix_achat;
+        this.isActive = isActive;
+        this.id_type = id_type;
+        this.id_categorie = id_categorie;
+        this.cree_le = cree_le;
+    }
+
+    public Produit(int id, String nom, String categorie, String type, int prix_vente, int prix_achat) {
+        this.id = id;
+        this.nom = nom;
+        this.categorie = categorie;
+        this.type = type;
+        this.prix_vente = prix_vente;
+        this.prix_achat = prix_achat;
+    }
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
     }
 
     public int getId() {
@@ -75,20 +113,20 @@ public class Produit {
         this.prix_vente = prix_vente;
     }
 
-    public char getIsActive() {
+    public String getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(char isActive) {
+    public void setIsActive(String isActive) {
         this.isActive = isActive;
     }
 
     public LocalDate getDate() {
-        return date;
+        return cree_le;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(LocalDate cree_le) {
+        this.cree_le = cree_le;
     }
 
     @Override
@@ -101,7 +139,7 @@ public class Produit {
                 ", prix_achat=" + prix_achat +
                 ", prix_vente=" + prix_vente +
                 ", isActive=" + isActive +
-                ", date=" + date +
+                ", date=" + cree_le +
                 '}';
     }
 }

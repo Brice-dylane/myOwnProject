@@ -8,15 +8,15 @@ public class Employe {
     private String prenom;
     private String sexe;
     private int telephone;
-    private int cni;
+    private String cni;
     private String poste;
-    private char isActive;
+    private String isActive;
     private LocalDate creer_le;
 
     public Employe() {
     }
 
-    public Employe(int id, String nom, String prenom, String sexe, int telephone, int cni, String poste, char isActive, LocalDate creer_le) {
+    public Employe(int id, String nom, String prenom, String sexe, int telephone, String cni, String poste, String isActive, LocalDate creer_le) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -26,6 +26,28 @@ public class Employe {
         this.poste = poste;
         this.isActive = isActive;
         this.creer_le = creer_le;
+    }
+
+    public Employe(String nom, String prenom, String sexe, int telephone, String cni, String poste, String isActive, LocalDate creer_le) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.sexe = sexe;
+        this.telephone = telephone;
+        this.cni = cni;
+        this.poste = poste;
+        this.isActive = isActive;
+        this.creer_le = creer_le;
+    }
+
+    public Employe(int id, String nom, String prenom, String sexe, int telephone, String cni, String poste) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.sexe = sexe;
+        this.telephone = telephone;
+        this.cni = cni;
+        this.poste = poste;
     }
 
     public int getId() {
@@ -68,11 +90,11 @@ public class Employe {
         this.telephone = telephone;
     }
 
-    public int getCni() {
+    public String getCni() {
         return cni;
     }
 
-    public void setCni(int cni) {
+    public void setCni(String cni) {
         this.cni = cni;
     }
 
@@ -84,11 +106,11 @@ public class Employe {
         this.poste = poste;
     }
 
-    public char getIsActive() {
+    public String getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(char isActive) {
+    public void setIsActive(String isActive) {
         this.isActive = isActive;
     }
 

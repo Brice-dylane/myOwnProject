@@ -1,4 +1,10 @@
-<%--
+<%@ page import="operations.ProduitOperation" %>
+<%@ page import="java.util.List" %>
+<%@ page import="entites.Produit" %>
+<%@ page import="operations.CategorieOperation" %>
+<%@ page import="entites.Categorie" %>
+<%@ page import="operations.TypeOperation" %>
+<%@ page import="entites.Type" %><%--
   Created by IntelliJ IDEA.
   User: Brice Dylane
   Date: 07/10/2020
@@ -177,17 +183,27 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <%
+                            ProduitOperation o = new ProduitOperation();
+                            List<Produit> list = o.entiteList();
+                            for (Produit p:list){
+                        %>
                         <tr>
-                            <td>Castel</td>
-                            <td class="hidden-phone">Lorem Ipsum dolor</td>
-                            <td>12000.00$ </td>
-                            <td>200000F</td>
-                            <td>200000F</td>
+                            <td><% out.println(p.getNom()); %></td>
+                            <td><% out.println(p.getCategorie()); %></td>
+                            <td><% out.println(p.getType()); %></td>
+                            <td><% out.println(p.getPrix_achat()); %></td>
+                            <td><% out.println(p.getPrix_vente()); %></td>
                             <td>
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infoProduit"><i class="fa fa-pencil"></i></button>
-                                <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                                <form method="post" action="Produit">
+                                <input type="text" value="delete" name="envent" style="display: none;">
+                                <input type="text" value="<% out.println(p.getId()); %>" name="id" style="display: none;">
+                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infoProduit"><i class="fa fa-pencil"></i></button>
+                                <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                                </form>
                             </td>
                         </tr>
+                        <% } %>
                         </tbody>
                     </table>
                 </div>
@@ -208,38 +224,46 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form method="post" action="Produit">
                     <div class="modal-body">
+                        <input type="text" value="insert" name="envent" style="display: none;">
                             <div class="form-group">
                                 <label for="name" class="col-form-label">Nom:</label>
                                 <input type="text" class="form-control" name="nom" id="name" required>
                             </div>
                             <div class="form-group">
-                                <label for="categorie" class="col-form-label">catégorie:</label>
-                                <select class="form-control" name="categorie" id="categorie" required>
-                                    <option>Jus</option>
-                                    <option>Bierre</option>
-                                    <option>Eau</option>
-                                    <option>Vin</option>
-                                    <option>Wisky</option>
+                                <label for="indexcat" class="col-form-label">catégorie:</label>
+                                <select class="form-control" id="indexcat" onchange="getSelectValueCat()" required>
+                                    <%
+                                        CategorieOperation cat = new CategorieOperation();
+                                        List<Categorie> listcat = cat.entiteList();
+                                        for (Categorie c: listcat){
+                                    %>
+                                    <option value="<% out.println(c.getId()); %>"><% out.println(c.getNom()); %></option>
+                                    <% } %>
                                 </select>
+                                <input type="text" name="categorie" id="categorie" style="display: none;">
                             </div>
                             <div class="form-group">
-                                <label for="type">Type</label>
-                                <select class="form-control" name="type" id="type" required>
-                                    <option>Palette 6</option>
-                                    <option>Casier 12</option>
-                                    <option>Casier 15</option>
-                                    <option>Casier 24</option>
+                                <label for="indextype">Type</label>
+                                <select class="form-control" id="indextype"  onchange="getSelectValueTyp()" required>
+                                    <%
+                                        TypeOperation op = new TypeOperation();
+                                        List<Type> tl = op.entiteList();
+                                        for (Type t:tl){
+                                    %>
+                                    <option value="<% out.println(t.getId()); %>"><% out.println(t.getNom()); %></option>
+                                    <% } %>
                                 </select>
+                                <input type="text" name="type" id="type" style="display: none;">
                             </div>
                         <div class="form-group">
                             <label for="pAchat" class="col-form-label">Prix d'achat:</label>
-                            <input type="number" class="form-control" name="pAchat" id="pAchat" required>
+                            <input type="text" class="form-control" name="pAchat" id="pAchat" required>
                         </div>
                         <div class="form-group">
                             <label for="pVente" class="col-form-label">Prix de vente:</label>
-                            <input type="number" class="form-control" name="nom" id="pVente" required>
+                            <input type="text" class="form-control" name="pVente" id="pVente" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -253,7 +277,7 @@
     <!--------Creer un produit End--------->
 
 
-    <!--------Info produit Start--------->
+    <!--------Info produit Start
     <div class="modal fade" id="infoProduit" tabindex="-1" role="dialog" aria-labelledby="ModalProduitTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -305,7 +329,7 @@
             </div>
         </div>
     </div>
-    <!--------Info produit End--------->
+    --------Info produit End--------->
 
 
     <!--main content end-->
@@ -330,5 +354,21 @@
 <script src="lib/jquery.nicescroll.js" type="text/javascript"></script>
 <!--common script for all pages-->
 <script src="lib/common-scripts.js"></script>
+<script type="text/javascript">
+        function getSelectValueCat()
+        {
+            var selectElmt = document.getElementById('indexcat');
+            var valeur = selectElmt.options[selectElmt.selectedIndex].value;
+            document.getElementById('categorie').value = valeur;
+        }
+
+        function getSelectValueTyp()
+        {
+            var selectElmt = document.getElementById('indextype');
+            var valeur = selectElmt.options[selectElmt.selectedIndex].value;
+            document.getElementById('type').value = valeur;
+        }
+
+</script>
 </body>
 </html>

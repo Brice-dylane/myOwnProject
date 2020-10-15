@@ -191,7 +191,7 @@
                                     <form method="post" action="Type">
                                         <input type="text" value="delete" name="envent" style="display: none;">
                                         <input type="text" value="<% out.println(t.getId()); %>" name="id" style="display: none;">
-                                        <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infocategorie"><i class="fa fa-pencil"></i></button>
+                                        <button class="btn btn-primary btn-xs" type="button" data-toggle="modal" data-target="#infocategorie"><i class="fa fa-pencil"></i></button>
                                         <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
                                     </form>
 

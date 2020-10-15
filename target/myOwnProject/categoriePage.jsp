@@ -1,4 +1,6 @@
-<%--
+<%@ page import="operations.CategorieOperation" %>
+<%@ page import="entites.Categorie" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Brice Dylane
   Date: 07/10/2020
@@ -174,14 +176,24 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <%
+                                CategorieOperation cat = new CategorieOperation();
+                                List<Categorie> list = cat.entiteList();
+                                for (Categorie c:list){
+                            %>
                             <tr>
-                                <td>Jus</td>
-                                <td>description</td>
+                                <td><% out.println(c.getNom()); %></td>
+                                <td><% out.println(c.getDescription()); %></td>
                                 <td>
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infocategorie"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                                    <form method="post" action="Categorie">
+                                        <input type="text" value="delete" name="envent" style="display: none;">
+                                        <input type="text" value="<% out.println(c.getId()); %>" name="id" style="display: none;">
+                                        <button class="btn btn-primary btn-xs" type="button" data-toggle="modal" data-target="#infocategorie"><i class="fa fa-pencil"></i></button>
+                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                                    </form>
                                 </td>
                             </tr>
+                            <% } %>
                             </tbody>
                         </table>
                     </div>
@@ -202,8 +214,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form method="post" action="Categorie">
                     <div class="modal-body">
+                        <input type="text" value="insert" name="envent" style="display: none;">
                         <div class="form-group">
                             <label for="name" class="col-form-label">Nom:</label>
                             <input type="text" class="form-control" name="nom" id="name" required>

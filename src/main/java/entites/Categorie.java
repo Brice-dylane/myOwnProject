@@ -6,18 +6,33 @@ public class Categorie {
     private int id;
     private String nom;
     private String description;
-    private char isActive;
+    private String isActive;
     private LocalDate creer_le;
 
     public Categorie() {
     }
 
-    public Categorie(int id, String nom, String description, char isActive, LocalDate creer_le) {
+    public Categorie(int id, String nom, String description, String isActive, LocalDate creer_le) {
         this.id = id;
         this.nom = nom;
         this.description = description;
         this.isActive = isActive;
         this.creer_le = creer_le;
+    }
+
+    public Categorie(String nom, String description, String isActive, LocalDate creer_le) {
+        this.id = id;
+        this.nom = nom;
+        this.description = description;
+        this.isActive = isActive;
+        this.creer_le = creer_le;
+    }
+
+    public Categorie(int id, String nom, String description, String isActive) {
+        this.id = id;
+        this.nom = nom;
+        this.description = description;
+        this.isActive = isActive;
     }
 
     public int getId() {
@@ -44,11 +59,11 @@ public class Categorie {
         this.description = description;
     }
 
-    public char getIsActive() {
+    public String getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(char isActive) {
+    public void setIsActive(String isActive) {
         this.isActive = isActive;
     }
 

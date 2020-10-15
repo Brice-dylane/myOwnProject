@@ -1,1 +1,0 @@
-web: java $JAVA_OPTS -jar lib/webapp-runner-9.0.11.0.jar --port $PORT target/myOwnProject.war

@@ -1,4 +1,6 @@
-<%--
+<%@ page import="operations.EmployeOperation" %>
+<%@ page import="java.util.List" %>
+<%@ page import="entites.Employe" %><%--
   Created by IntelliJ IDEA.
   User: Brice Dylane
   Date: 07/10/2020
@@ -167,26 +169,38 @@
                             <hr>
                             <thead>
                             <tr>
-                                <th> Nom</th>
+                                <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Sexe</th>
                                 <th>Téléphone</th>
                                 <th>Numéro de CNI</th>
+                                <th>Poste</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
+                            <%
+                                EmployeOperation op = new EmployeOperation();
+                                List<Employe> list = op.entiteList();
+                                for (Employe e:list){
+                            %>
                             <tr>
-                                <td>Belinga</td>
-                                <td>Justine</td>
-                                <th>Feminin</th>
-                                <th>678345623</th>
-                                <th>123456789</th>
+                                <td><% out.println(e.getNom()); %></td>
+                                <td><% out.println(e.getPrenom()); %></td>
+                                <td><% out.println(e.getSexe()); %></td>
+                                <td><% out.println(e.getTelephone()); %></td>
+                                <td><% out.println(e.getCni()); %></td>
+                                <td><% out.println(e.getPoste()); %></td>
                                 <td>
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infoEmploye"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                                    <form method="post" action="Employe">
+                                        <input type="text" value="delete" name="envent" style="display: none;">
+                                        <input type="text" value="<% out.println(e.getId()); %>" name="id" style="display: none;">
+                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infoEmploye"><i class="fa fa-pencil"></i></button>
+                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                                    </form>
                                 </td>
                             </tr>
+                            <% } %>
                             </tbody>
                         </table>
                     </div>
@@ -207,8 +221,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form method="post" action="Employe">
                     <div class="modal-body">
+                        <input type="text" value="insert" name="envent" style="display: none;">
                         <div class="form-group">
                             <label for="name" class="col-form-label">Nom:</label>
                             <input type="text" class="form-control" name="name" id="name" required>
@@ -228,7 +243,7 @@
                         <div class="form-group">
                             <label for="poste" class="col-form-label">Poste:</label>
                             <select class="form-control" name="poste" id="poste" required>
-                                <option>Gérant(e)</option>
+                                <option>Gerant(e)</option>
                                 <option>Caissier(e)</option>
                                 <option>Serveur(se)</option>
                             </select>
@@ -253,7 +268,7 @@
     <!--------Creer une Catégorie End--------->
 
 
-    <!--------Info Catégorie Start--------->
+    <!--------Info Catégorie Start
     <div class="modal fade" id="infoEmploye" tabindex="-1" role="dialog" aria-labelledby="ModalEmployeTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -306,7 +321,7 @@
             </div>
         </div>
     </div>
-    <!--------Info Catégorie End--------->
+    --------Info Catégorie End--------->
 
 
     <!--main content end-->
