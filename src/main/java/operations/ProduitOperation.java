@@ -58,7 +58,7 @@ public class ProduitOperation  implements OperationEntiteInterface<Produit> {
 
     @Override
     public List<Produit> entiteList() {
-        List<Produit> list = new ArrayList<>();
+        List<Produit> list = new ArrayList<Produit>();
         String sql = "SELECT p.id_pro,p.nom, c.nom as cat, t.nom as type,p.prix_vente,p.prix_achat " +
                 "FROM produit p " +
                 "LEFT JOIN type t ON(p.id_type=t.id_type) " +
