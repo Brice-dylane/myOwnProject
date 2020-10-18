@@ -1,4 +1,9 @@
-<%--
+<%@ page import="operations.ProduitOperation" %>
+<%@ page import="java.util.List" %>
+<%@ page import="entites.Produit" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="entites.Achat" %><%--
   Created by IntelliJ IDEA.
   User: Brice Dylane
   Date: 07/10/2020
@@ -25,7 +30,14 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet">
     <link rel="stylesheet" href="lib/advanced-datatable/css/DT_bootstrap.css" />
-
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#quantite").on("input", function () {
+                $("#prix_total").val($(this).val()*$("#prix_achat").val());
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -153,6 +165,10 @@
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
     <!--main content start-->
+    <%
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String localDate = LocalDate.now().format(formatter);
+    %>
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
@@ -161,37 +177,32 @@
                         <h1>+</h1><h4>Nouveau achat</h4>
                     </div>
                 </div>
-                <div class="col-md-2 col-md-offset-1">
-                    <div class="text-center">
-                        <h1><i class="fa fa-money"></i></h1>
-                        <h3 style="color: seagreen;">20000.0 FCFA</h3>
-                        <h5>Ristournes</h5>
-                    </div>
-                </div>
-
             </div>
+
             <div class="row mt">
                 <div class="col-md-12">
                     <div class="content-panel">
                         <div class="adv-table">
                             <table class="table table-striped table-advance table-hover table-bordered" cellpadding="0" cellspacing="0" border="0" id="hidden-table-info">
-                                <form>
                                     <div class="row">
+                                        <form method="post" action="Achats">
                                         <div class="col-md-3">
+                                            <input type="text" value="recherche" name="envent" style="display: none;">
                                             <h4><i class="fa fa-angle-right"></i> Liste des achats</h4>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="input-group" data-date="01/01/2014" data-date-format="mm/dd/yyyy">
-                                                <span class="input-group-addon">du</span><input type="text" class="form-control dpd1" name="from">
+                                            <div class="input-group input-large" data-date-viewmode="years" data-date="01-01-2020" data-date-format="dd-mm-yyyy">
+                                                <span class="input-group-addon">du</span>
+                                                <input type="text" class="form-control dpd1 default-date-picker" name="from" required>
                                                 <span class="input-group-addon">au</span>
-                                                <input type="text" class="form-control dpd2" name="to">
+                                                <input type="text" class="form-control dpd2 default-date-picker" name="to" required>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Chercher</button>
                                         </div>
+                                        </form>
                                     </div>
-                                </form>
                                 <hr>
                                 <thead>
                                 <tr>
@@ -206,18 +217,29 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <%
+                                    List<Achat> list = (List<Achat>) request.getAttribute("defaultList");
+                                    int total = 0;
+                                    for (Achat a:list){
+                                %>
                                 <tr>
-                                    <td>Castel</td>
-                                    <td>Bierre</td>
-                                    <td>casier 12</td>
-                                    <td>12 bouteilles </td>
-                                    <td>600 Fcfa</td>
-                                    <td>9600 Fcfa</td>
-                                    <td>11-10-2020</td>
+                                    <td><%out.println(a.getNomPro());%></td>
+                                    <td><%out.println(a.getCategorie());%></td>
+                                    <td><%out.println(a.getType());%></td>
+                                    <td><%out.println(a.getQte());%></td>
+                                    <td><%out.println(a.getPrixAchat());%></td>
+                                    <td><%out.println(a.getPrixTotal());%></td>
+                                    <td>
+                                        <%
+                                            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+                                            out.println(a.getDateAchat().format(format));
+                                        %>
+                                    </td>
                                     <td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infoCom"><i class="fa fa-pencil"></i></button>
                                         <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
                                     </td>
                                 </tr>
+                                <% total=total+a.getPrixTotal(); } %>
                                 </tbody>
                             </table>
                         </div>
@@ -226,7 +248,20 @@
                 </div>
                 <!-- /col-md-12 -->
             </div>
-
+            <div class="row mt">
+                <div class="col-md-3 col-sm-3 mb text-center">
+                    <h1><i class="fa fa-money"></i></h1>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <h5>Total des achats</h5>
+                        </div>
+                        <div class="col-sm-12 col-xs-12">
+                            <h3><%out.println(total);%> FCFA</h3>
+                        </div>
+                    </div>
+                    <!-- /grey-panel -->
+                </div>
+            </div>
 
         </section>
     </section>
@@ -241,42 +276,48 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form method="post" action="Achats">
                     <div class="modal-body">
+                        <input type="text" value="insert" name="envent" style="display: none;">
                         <div class="form-group">
-                            <label for="produit" class="col-form-label">Produit:</label>
-                            <select class="form-control" name="produit" id="produit" required>
-                                <option>Jus</option>
-                                <option>Bierre</option>
-                                <option>Eau</option>
-                                <option>Vin</option>
-                                <option>Wisky</option>
+                            <label for="indexPro" class="col-form-label">Produit:</label>
+                            <select class="form-control" onchange="getSelectValuePro()" id="indexPro" required>
+                                <option value="0">--Selectionner un produit--</option>
+                                <%
+                                    ProduitOperation op = new ProduitOperation();
+                                    List<Produit> listP = op.entiteList();
+                                    for (Produit p:listP){
+                                %>
+                                <option value="<%out.println(p.getPrix_achat()+","+p.getId());%>"><%out.println(p.getNom()+" ("+p.getType()+")");%></option>
+                                <% } %>
                             </select>
+                            <input type="text" name="id_pro" id="idPro" style="display: none;">
                         </div>
                         <div class="form-group">
                             <label for="quantite" class="col-form-label">Quantité:</label>
-                            <input type="number" class="form-control" name="quantite" id="quantite" required>
+                            <input type="text" class="form-control" name="qte" id="quantite" required>
                         </div>
                         <div class="form-group">
                             <label for="prix_achat" class="col-form-label">Prix d'achat:</label>
-                            <input type="number" class="form-control" name="prix_achat" id="prix_achat" disabled>
+                            <input type="text" class="form-control" value="0" name="prix_achat" id="prix_achat" readonly>
                         </div>
                         <div class="form-group">
                             <label for="prix_total" class="col-form-label">Prix total:</label>
-                            <input type="number" class="form-control" name="prix_total" id="prix_total" disabled>
+                            <input type="text" class="form-control" value="0" name="prix_total" id="prix_total" readonly>
                         </div>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="01-01-2014" class="input-append date dpYears">
+                                    <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="<%out.println(localDate);%>" class="input-append date dpYears">
                                         <label for="date" class="col-form-label">Date:</label>
-                                        <input type="text" readonly="" value="01-01-2014" name="date" id="date" class="form-control" required>
+                                        <input type="text" readonly="" value="<%out.println(localDate);%>" name="date_achat" id="date" class="form-control">
                                         <span class="input-group-btn add-on">
-                            <button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
-                            </span>
+                                            <button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -290,7 +331,7 @@
     <!--------Creer un produit End--------->
 
 
-    <!--------Info produit Start--------->
+    <!--------Info produit Start---
     <div class="modal fade" id="infoCom" tabindex="-1" role="dialog" aria-labelledby="ModalComTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -347,7 +388,7 @@
             </div>
         </div>
     </div>
-    <!--------Info produit End--------->
+ ----Info produit End--------->
 
 
     <!--main content end-->
@@ -365,7 +406,7 @@
     <!--footer end-->
 </section>
 <!-- js placed at the end of the document so the pages load faster -->
-<script src="lib/jquery/jquery.min.js"></script>
+
 <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
@@ -390,6 +431,19 @@
 <script type="text/javascript" src="lib/bootstrap-daterangepicker/moment.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
 <script src="lib/advanced-form-components.js"></script>
+
+<script type="text/javascript">
+
+    function getSelectValuePro()
+    {
+        var selectElmt = document.getElementById('indexPro');
+        var chaine = selectElmt.options[selectElmt.selectedIndex].value.split(',');
+        document.getElementById('prix_achat').value = chaine[0];
+        document.getElementById('idPro').value = chaine[1]
+    }
+</script>
+
+
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -420,6 +474,9 @@
                 [1, 'asc']
             ]
         });
+
+
+
     });
 </script>
 </body>

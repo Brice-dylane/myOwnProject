@@ -78,4 +78,40 @@ public class ProduitOperation  implements OperationEntiteInterface<Produit> {
 
         return list;
     }
+
+    //Conversion de casier ou palette en bouteille
+    public static int conversionEnBouteille(int nbr, int idProd){
+        int nbr_value=0;
+        String sql = "SELECT t.nbr_bouteille FROM produit p LEFT JOIN type t ON(p.id_type=t.id_type) WHERE id_pro=?";
+        try {
+            PreparedStatement ps = loadDataBase().prepareStatement(sql);
+            ps.setInt(1,idProd);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                nbr_value = nbr * rs.getInt("nbr_bouteille");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return nbr_value;
+    }
+
+    //Conversion bouteilles en casier ou palettes
+    public static int conversionEnCasier(int nbr, int idProd){
+        int nbr_val=0;
+        String sql = "SELECT t.nbr_bouteille FROM produit p LEFT JOIN type t ON(p.id_type=t.id_type) WHERE id_pro=?";
+        try {
+            PreparedStatement ps = loadDataBase().prepareStatement(sql);
+            ps.setInt(1,idProd);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                nbr_val = nbr / rs.getInt("nbr_bouteille");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return nbr_val;
+    }
 }

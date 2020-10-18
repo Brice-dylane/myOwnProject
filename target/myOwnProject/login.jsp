@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/style_login.css">
     <title>Login</title>
 </head>
-<body style="background-image: url('images/hero-2.png');">
+<body style="background-image: url('images/hero-2.png'); background-size: cover;">
 <!-- Main Content -->
 <div class="container-fluid">
     <div class="row main-content bg-success text-center">

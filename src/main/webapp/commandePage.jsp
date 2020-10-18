@@ -300,7 +300,7 @@
     <!--------Creer un produit End--------->
 
 
-    <!--------Info produit Start--------->
+    <!--------Info produit Start--
     <div class="modal fade" id="infoCom" tabindex="-1" role="dialog" aria-labelledby="ModalComTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -336,7 +336,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="01-01-2014" class="input-append date dpYears">
+                                    <div data-date-viewmode="years" data-date-format="dd-MM-yyyy" data-date="01-01-2014" class="input-append date dpYears">
                                         <label for="idate" class="col-form-label">Date:</label>
                                         <input type="text" readonly="" value="01-01-2014" name="idate" size="14" id="idate" class="form-control" required>
                                         <span class="input-group-btn add-on">
@@ -356,7 +356,7 @@
             </div>
         </div>
     </div>
-    <!--------Info produit End--------->
+    -----Info produit End--------->
 
 
     <!--main content end-->

@@ -1,4 +1,8 @@
-<%--
+<%@ page import="operations.DepenseOperation" %>
+<%@ page import="java.util.List" %>
+<%@ page import="entites.Depense" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDate" %><%--
   Created by IntelliJ IDEA.
   User: Brice Dylane
   Date: 07/10/2020
@@ -19,6 +23,9 @@
     <!-- Bootstrap core CSS -->
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="lib/bootstrap-datepicker/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap-timepicker/compiled/timepicker.css" />
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap-datetimepicker/datertimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap-daterangepicker/daterangepicker.css" />
     <!--external css-->
     <link href="lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
@@ -167,23 +174,31 @@
                     <div class="content-panel">
                         <div class="adv-table">
                             <table class="table table-striped table-advance table-hover table-bordered" cellpadding="0" cellspacing="0" border="0" id="hidden-table-info">
-                                <form>
+
                                     <div class="row">
-                                    <div class="col-md-3">
-                                        <h4><i class="fa fa-angle-right"></i> Liste des dépense</h4>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="input-group" data-date="01/01/2014" data-date-format="mm/dd/yyyy">
-                                            <span class="input-group-addon">du</span><input type="text" class="form-control dpd1" name="from">
-                                            <span class="input-group-addon">au</span>
-                                            <input type="text" class="form-control dpd2" name="to">
+                                        <form method="post" action="Depenses">
+                                        <div class="col-md-3">
+                                            <input type="text" value="recherche" name="envent" style="display: none;">
+                                            <h4><i class="fa fa-angle-right"></i> Liste des dépenses</h4>
                                         </div>
+                                        <div class="col-md-4">
+                                            <%
+                                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                                                String localDate = LocalDate.now().format(formatter);
+                                            %>
+                                            <div class="input-group input-large" data-date-viewmode="years" data-date="01-01-2020" data-date-format="dd-mm-yyyy">
+                                                <span class="input-group-addon">du</span>
+                                                <input type="text" class="form-control dpd1 default-date-picker" name="from" required>
+                                                <span class="input-group-addon">au</span>
+                                                <input type="text" class="form-control dpd2 default-date-picker" name="to" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> Chercher</button>
+                                        </div>
+                                        </form>
                                     </div>
-                                    <div class="col-md-2">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Chercher</button>
-                                    </div>
-                                </div>
-                                </form>
+
                                 <hr>
                                 <thead>
                                 <tr>
@@ -195,15 +210,30 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <%
+                                    List<Depense> list = (List<Depense>) request.getAttribute("defaultList");
+                                    int total = 0;
+                                    for (Depense d:list){
+                                %>
                                 <tr>
-                                    <td>Achat de la télévision</td>
-                                    <td>120000 Fcfa</td>
-                                    <td>Animation du bar</td>
-                                    <td>01-10-2020 </td>
-                                    <td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infoCom"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                                    <td><% out.println(d.getTitre()); %></td>
+                                    <td><% out.println(d.getPrix()); %> Fcfa</td>
+                                    <td><% out.println(d.getDescription()); %></td>
+                                    <td>
+                                        <%
+                                            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+                                            out.println(d.getCreer_le().format(format));
+                                        %></td>
+                                    <td>
+                                        <form method="post" action="Depenses">
+                                            <input type="text" value="delete" name="envent" style="display: none;">
+                                            <input type="text" value="<% out.println(d.getId()); %>" name="id" style="display: none;">
+                                       <!-- <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#infoCom"><i class="fa fa-pencil"></i></button>-->
+                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                                        </form>
                                     </td>
                                 </tr>
+                                <% total = total + d.getPrix(); } %>
                                 </tbody>
                             </table>
                         </div>
@@ -211,6 +241,20 @@
                     <!-- /content-panel -->
                 </div>
                 <!-- /col-md-12 -->
+            </div>
+            <div class="row mt">
+                <div class="col-md-3 col-sm-3 mb text-center">
+                    <h1><i class="fa fa-sort-amount-desc"></i></h1>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <h5>Total des dépenses</h5>
+                        </div>
+                        <div class="col-sm-12 col-xs-12">
+                            <h3><%out.println(total);%> FCFA</h3>
+                        </div>
+                    </div>
+                    <!-- /grey-panel -->
+                </div>
             </div>
         </section>
     </section>
@@ -225,8 +269,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form method="post" action="Depenses">
                     <div class="modal-body">
+                        <input type="text" value="insert" name="envent" style="display: none;">
                         <div class="form-group">
                             <label for="titre" class="col-form-label">Libellé:</label>
                             <input type="text" class="form-control" name="titre" id="titre" required>
@@ -242,9 +287,9 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="01-01-2014" class="input-append date dpYears">
+                                    <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="<%out.println(localDate);%>" class="input-append date dpYears">
                                         <label for="date" class="col-form-label">Date:</label>
-                                        <input type="text" readonly="" value="01-01-2014" name="date" id="date" class="form-control">
+                                        <input type="text" readonly="" value="<%out.println(localDate);%>" name="date_dep" id="date" class="form-control">
                                         <span class="input-group-btn add-on">
                                             <button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
                                         </span>
@@ -265,7 +310,7 @@
     <!--------Creer un produit End--------->
 
 
-    <!--------Info produit Start--------->
+    <!--------Info produit Start-
     <div class="modal fade" id="infoCom" tabindex="-1" role="dialog" aria-labelledby="ModalComTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -312,7 +357,7 @@
             </div>
         </div>
     </div>
-    <!--------Info produit End--------->
+  --Info produit End--------->
 
 
     <!--main content end-->
@@ -354,8 +399,7 @@
 <script type="text/javascript" src="lib/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript" src="lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="lib/bootstrap-daterangepicker/moment.min.js"></script>
-<script type="text/javascript" src="lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-<script src="lib/advanced-form-components.js"></script>
+
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -388,5 +432,7 @@
         });
     });
 </script>
+<script type="text/javascript" src="lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+<script src="lib/advanced-form-components.js"></script>
 </body>
 </html>
