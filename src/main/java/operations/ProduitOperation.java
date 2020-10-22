@@ -15,7 +15,7 @@ public class ProduitOperation  implements OperationEntiteInterface<Produit> {
 
     @Override
     public void insertEntite(Produit entite) {
-        String sql = "INSERT INTO produit(nom,prix_vente,prix_achat,isactive,creer_le,id_type,id_cat) VALUES(?,?,?,?,?,?,?) ";
+        String sql = "INSERT INTO produit(nom,prix_vente,prix_achat,isactive,creer_le,id_type,id_cat,ristourne) VALUES(?,?,?,?,?,?,?,?) ";
         try {
             PreparedStatement ps = loadDataBase().prepareStatement(sql);
             ps.setString(1,entite.getNom());
@@ -26,6 +26,7 @@ public class ProduitOperation  implements OperationEntiteInterface<Produit> {
             ps.setDate(5,sqldate);
             ps.setInt(6,entite.getId_type());
             ps.setInt(7,entite.getId_categorie());
+            ps.setString(8,entite.getRistourne());
             ps.executeUpdate();
             ps.close();
             loadDataBase().close();

@@ -29,7 +29,17 @@
 <!-- Custom styles for this template -->
 <link href="css/style.css" rel="stylesheet">
 <link href="css/style-responsive.css" rel="stylesheet">
-
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#inlineRadio1").click(function () {
+                $("#ristourne").val($(this).val());
+            });
+            $("#inlineRadio2").click(function () {
+                $("#ristourne").val($(this).val());
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -259,13 +269,25 @@
                             </div>
                         <div class="form-group">
                             <label for="pAchat" class="col-form-label">Prix d'achat:</label>
-                            <input type="text" class="form-control" name="pAchat" id="pAchat" required>
+                            <input type="number" class="form-control" name="pAchat" id="pAchat" required>
                         </div>
                         <div class="form-group">
                             <label for="pVente" class="col-form-label">Prix de vente:</label>
-                            <input type="text" class="form-control" name="pVente" id="pVente" required>
+                            <input type="number" class="form-control" name="pVente" id="pVente" required>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label>Ya-t-il des ristournes?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Y">
+                                <label class="form-check-label" for="inlineRadio1">Oui</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="N" checked>
+                                <label class="form-check-label" for="inlineRadio2">Non</label>
+                            </div>
+                            <input type="text" name="ristourne" id="ristourne" value="N" style="display: none;">
+                            </div>
+                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                         <button type="submit" class="btn btn-primary">Ajouter</button>

@@ -220,6 +220,7 @@
                                 <%
                                     List<Achat> list = (List<Achat>) request.getAttribute("defaultList");
                                     int total = 0;
+                                    int ristourne = 0;
                                     for (Achat a:list){
                                 %>
                                 <tr>
@@ -239,7 +240,12 @@
                                         <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
                                     </td>
                                 </tr>
-                                <% total=total+a.getPrixTotal(); } %>
+                                <%
+                                        total=total+a.getPrixTotal();
+                                        if (a.getRistourne().equals("Y"))
+                                            ristourne += a.getQte();
+                                    }
+                                %>
                                 </tbody>
                             </table>
                         </div>
@@ -257,6 +263,18 @@
                         </div>
                         <div class="col-sm-12 col-xs-12">
                             <h3><%out.println(total);%> FCFA</h3>
+                        </div>
+                    </div>
+                    <!-- /grey-panel -->
+                </div>
+                <div class="col-md-3 col-sm-3 mb text-center">
+                    <h1><i class="fa fa-money"></i></h1>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <h4>Ristournes</h4>
+                        </div>
+                        <div class="col-sm-12 col-xs-12">
+                            <h3 style="color: green"><%out.println(ristourne*100);%> FCFA</h3>
                         </div>
                     </div>
                     <!-- /grey-panel -->

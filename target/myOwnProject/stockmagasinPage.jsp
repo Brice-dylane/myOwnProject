@@ -1,4 +1,10 @@
-<%--
+<%@ page import="operations.CategorieOperation" %>
+<%@ page import="java.util.List" %>
+<%@ page import="entites.Categorie" %>
+<%@ page import="operations.TypeOperation" %>
+<%@ page import="entites.Type" %>
+<%@ page import="entites.Magasin" %>
+<%@ page import="java.time.format.DateTimeFormatter" %><%--
   Created by IntelliJ IDEA.
   User: Brice Dylane
   Date: 07/10/2020
@@ -160,40 +166,57 @@
                     <div class="content-panel">
                         <div class="adv-table">
                             <table class="table table-striped table-advance table-hover table-bordered" cellpadding="0" cellspacing="0" border="0" id="hidden-table-info">
-                                <form>
                                     <div class="row">
-                                    <div class="col-md-3">
-                                        <h4><i class="fa fa-angle-right"></i> Produit en stock magasin</h4>
+                                        <form method="post" action="Magasin">
+                                            <div class="col-md-3">
+                                                <input type="text" value="recherche" name="envent" style="display: none;">
+                                                <h4><i class="fa fa-angle-right"></i> Produit en stock magasin</h4>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select class="form-control" onchange="getSelectValueCat()" id="categorie">
+                                                    <option value="0">--Sélectionner--</option>
+                                                    <%
+                                                        CategorieOperation categorieOperation = new CategorieOperation();
+                                                        List<Categorie> list_cat = categorieOperation.entiteList();
+                                                        for (Categorie c:list_cat){
+                                                    %>
+                                                    <option value="<%out.println(c.getId());%>"><%out.println(c.getNom());%></option>
+                                                    <% } %>
+                                                </select>
+                                                <input type="text" value="0" name="categorie" id="idCat" style="display: none;">
+                                                <span class="help-block">Trier par catégorie</span>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <select class="form-control" onchange="getSelectValueType()" id="typee">
+                                                    <option value="0">--Sélectionner--</option>
+                                                    <%
+                                                        TypeOperation typeOperation = new TypeOperation();
+                                                        List<Type> typeList = typeOperation.entiteList();
+                                                        for (Type t:typeList){
+                                                    %>
+                                                    <option value="<%out.println(t.getId());%>"><%out.println(t.getNom());%></option>
+                                                    <% } %>
+                                                </select>
+                                                <input type="text" value="0" name="type" id="idType" style="display: none;">
+                                                <span class="help-block">Trier par Type</span>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <select class="form-control" onchange="getSelectValueEtat()" id="eta">
+                                                    <option value="">--Sélectionner--</option>
+                                                    <option value="e">Entrée</option>
+                                                    <option value="s">Sortie</option>
+                                                </select>
+                                                <input type="text" value="" name="etat" id="etat" style="display: none;">
+                                                <span class="help-block">Trier par Etat</span>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Chercher</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="col-md-2">
-                                        <select class="form-control" name="categorie">
-                                            <option>Tout</option>
-                                            <option>Bierre</option>
-                                            <option>Jus</option>
-                                        </select>
-                                        <span class="help-block">Trier par catégorie</span>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <select class="form-control" name="type">
-                                            <option>Tout</option>
-                                            <option>Palette 6</option>
-                                            <option>Casier 12</option>
-                                        </select>
-                                        <span class="help-block">Trier par Type</span>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <select class="form-control" name="etat">
-                                            <option>Tout</option>
-                                            <option>Entrée</option>
-                                            <option>Sortie</option>
-                                        </select>
-                                        <span class="help-block">Trier par Etat</span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Chercher</button>
-                                    </div>
-                                </div>
-                                </form>
                                 <hr>
                                 <thead>
                                 <tr>
@@ -208,16 +231,26 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <%
+                                    List<Magasin> magasinList = (List<Magasin>) request.getAttribute("proMagasin");
+                                    for (Magasin m:magasinList){
+                                %>
                                 <tr>
-                                    <td>Castel</td>
-                                    <td>Bierre</td>
-                                    <td>casier 12</td>
-                                    <td>1200 bouteilles </td>
-                                    <td>600 Fcfa</td>
-                                    <td>800 Fcfa</td>
-                                    <td>11-10-2020</td>
-                                    <td>Sortie</td>
+                                    <td><%out.println(m.getNomPro());%></td>
+                                    <td><%out.println(m.getNomCat());%></td>
+                                    <td><%out.println(m.getNomType());%></td>
+                                    <td><%out.println(m.getQte());%></td>
+                                    <td><%out.println(m.getPrixAchat());%></td>
+                                    <td><%out.println(m.getPrixVente());%></td>
+                                    <td>
+                                        <%
+                                            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+                                            out.print(m.getDate().format(format));
+                                        %>
+                                    </td>
+                                    <td><%out.println(m.getEtat());%></td>
                                 </tr>
+                                <% } %>
                                 </tbody>
                             </table>
                         </div>
@@ -270,6 +303,29 @@
 <script type="text/javascript" src="lib/bootstrap-daterangepicker/moment.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
 <script src="lib/advanced-form-components.js"></script>
+
+<script type="text/javascript">
+
+    function getSelectValueType()
+    {
+        var selectElmt = document.getElementById('typee');
+        var value = selectElmt.options[selectElmt.selectedIndex].value;
+        document.getElementById('idType').value = value;
+    }
+
+    function getSelectValueCat()
+    {
+        var selectElmt = document.getElementById('categorie');
+        var value = selectElmt.options[selectElmt.selectedIndex].value;
+        document.getElementById('idCat').value = value;
+    }
+
+    function getSelectValueEtat() {
+        var selectElmt = document.getElementById('eta');
+        var value = selectElmt.options[selectElmt.selectedIndex].value;
+        document.getElementById('etat').value = value;
+    }
+</script>
 
 <script type="text/javascript">
     $(document).ready(function() {

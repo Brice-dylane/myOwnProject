@@ -11,19 +11,19 @@ public class Achat {
     private int qte;
     private int prixAchat;
     private int prixTotal;
-    private int restourne;
+    private String ristourne;
     private String isactive;
     private LocalDate dateAchat;
 
     public Achat() {
     }
 
-    public Achat(int id, int idPro, int qte, int prixTotal, int restourne, String isactive, LocalDate dateAchat) {
+    public Achat(int id, int idPro, int qte, int prixTotal, String ristourne, String isactive, LocalDate dateAchat) {
         this.id = id;
         this.idPro = idPro;
         this.qte = qte;
         this.prixTotal = prixTotal;
-        this.restourne = restourne;
+        this.ristourne = ristourne;
         this.isactive = isactive;
         this.dateAchat = dateAchat;
     }
@@ -36,7 +36,7 @@ public class Achat {
         this.dateAchat = dateAchat;
     }
 
-    public Achat(String nomPro, String categorie, String type, int qte, int prixAchat, int prixTotal, LocalDate dateAchat) {
+    public Achat(String nomPro, String categorie, String type, int qte, int prixAchat, int prixTotal, LocalDate dateAchat, String ristourne) {
         this.nomPro = nomPro;
         this.categorie = categorie;
         this.type = type;
@@ -44,6 +44,7 @@ public class Achat {
         this.prixTotal = prixTotal;
         this.prixAchat = prixAchat;
         this.dateAchat = dateAchat;
+        this.ristourne = ristourne;
     }
 
     public int getId() {
@@ -86,12 +87,12 @@ public class Achat {
         this.prixAchat = prixAchat;
     }
 
-    public int getRestourne() {
-        return restourne;
+    public String getRistourne() {
+        return ristourne;
     }
 
-    public void setRestourne(int restourne) {
-        this.restourne = restourne;
+    public void setRistourne(String ristourne) {
+        this.ristourne = ristourne;
     }
 
     public String getIsactive() {
@@ -141,7 +142,7 @@ public class Achat {
                 ", idPro=" + idPro +
                 ", qte=" + qte +
                 ", prixTotal=" + prixTotal +
-                ", restourne=" + restourne +
+                ", restourne=" + ristourne +
                 ", isactive='" + isactive + '\'' +
                 ", dateAchat=" + dateAchat +
                 '}';

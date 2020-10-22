@@ -22,7 +22,8 @@ public class ProductControlleur extends HttpServlet {
         if(event.equals("insert")){
             LocalDate localDate = LocalDate.now();
             Produit produit = new Produit(request.getParameter("nom"),Integer.parseInt(request.getParameter("pVente")),
-                    Integer.parseInt(request.getParameter("pAchat")),"Y",Integer.parseInt(request.getParameter("type")),Integer.parseInt(request.getParameter("categorie")),localDate);
+                    Integer.parseInt(request.getParameter("pAchat")),"Y",Integer.parseInt(request.getParameter("type")),
+                    Integer.parseInt(request.getParameter("categorie")),localDate,request.getParameter("ristourne"));
             operation.insertEntite(produit);
             this.getServletContext().getRequestDispatcher("/produitPage.jsp").forward(request, response);
         }

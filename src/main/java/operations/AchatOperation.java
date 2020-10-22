@@ -9,7 +9,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +71,13 @@ public class AchatOperation implements OperationEntiteInterface<Achat> {
 
     public List<Achat> searchEntite(Date from, Date to){
         List<Achat> list = new ArrayList<Achat>();
-        String sql = "SELECT p.id_pro, p.nom as produit, c.nom as cat, t.nom as type, a.qte, p.prix_achat,a.prix_total, a.date_achat FROM achat a LEFT JOIN produit p ON(p.id_pro=a.id_pro) " +
-                "LEFT JOIN categorie c ON(p.id_cat=c.id_cat) LEFT JOIN type t ON(p.id_type=t.id_type) WHERE a.isactive='Y' AND a.date_achat BETWEEN ? AND ? ORDER BY id_achat desc";
+        String sql = "SELECT p.id_pro, p.ristourne, p.nom as produit, c.nom as cat, t.nom as type, a.qte, p.prix_achat,a.prix_total, a.date_achat " +
+                "FROM achat a " +
+                "LEFT JOIN produit p ON(p.id_pro=a.id_pro) " +
+                "LEFT JOIN categorie c ON(p.id_cat=c.id_cat) " +
+                "LEFT JOIN type t ON(p.id_type=t.id_type) " +
+                "WHERE a.isactive='Y' AND a.date_achat BETWEEN ? AND ? " +
+                "ORDER BY id_achat desc";
         try {
             PreparedStatement ps = loadDataBase().prepareStatement(sql);
             ps.setDate(1,from);
@@ -82,7 +86,7 @@ public class AchatOperation implements OperationEntiteInterface<Achat> {
             while (rs.next()){
                 int qte = ProduitOperation.conversionEnCasier(rs.getInt("qte"),rs.getInt("id_pro"));
                 Achat achat = new Achat(rs.getString("produit"),rs.getString("cat"),rs.getString("type"),qte,
-                        rs.getInt("prix_achat"),rs.getInt("prix_total"),rs.getDate("date_achat").toLocalDate());
+                        rs.getInt("prix_achat"),rs.getInt("prix_total"),rs.getDate("date_achat").toLocalDate(),rs.getString("ristourne"));
                 list.add(achat);
             }
         } catch (SQLException throwables) {

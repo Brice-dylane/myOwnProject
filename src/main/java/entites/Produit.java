@@ -14,6 +14,7 @@ public class Produit {
     private int prix_vente;
     private String isActive;
     private LocalDate cree_le;
+    private String ristourne;
 
     public Produit() {
     }
@@ -29,7 +30,7 @@ public class Produit {
         this.cree_le = cree_le;
     }
 
-    public Produit(String nom, int prix_vente,int prix_achat,String isActive, int id_type, int id_categorie,LocalDate cree_le) {
+    public Produit(String nom, int prix_vente,int prix_achat,String isActive, int id_type, int id_categorie,LocalDate cree_le, String ristourne) {
         this.nom = nom;
         this.prix_vente = prix_vente;
         this.prix_achat = prix_achat;
@@ -37,6 +38,7 @@ public class Produit {
         this.id_type = id_type;
         this.id_categorie = id_categorie;
         this.cree_le = cree_le;
+        this.ristourne = ristourne;
     }
 
     public Produit(int id, String nom, String categorie, String type, int prix_vente, int prix_achat) {
@@ -48,6 +50,22 @@ public class Produit {
         this.prix_achat = prix_achat;
     }
 
+
+    public String getRistourne() {
+        return ristourne;
+    }
+
+    public void setRistourne(String ristourne) {
+        this.ristourne = ristourne;
+    }
+
+    public LocalDate getCree_le() {
+        return cree_le;
+    }
+
+    public void setCree_le(LocalDate cree_le) {
+        this.cree_le = cree_le;
+    }
 
     public String getType() {
         return type;
