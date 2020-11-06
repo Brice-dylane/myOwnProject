@@ -248,7 +248,13 @@
                                             out.print(m.getDate().format(format));
                                         %>
                                     </td>
-                                    <td><%out.println(m.getEtat());%></td>
+                                    <%
+                                        if (m.getEtat().equals("Entrée")){
+                                    %>
+                                    <td><button type="button" class="btn btn-primary btn-xs"><i class="fa fa-level-down "></i></button> <%out.println(m.getEtat());%></td>
+                                    <% } else { %>
+                                    <td><button type="button" class="btn btn-danger btn-xs"><i class="fa fa-level-up "></i></button> <%out.println(m.getEtat());%></td>
+                                    <% } %>
                                 </tr>
                                 <% } %>
                                 </tbody>

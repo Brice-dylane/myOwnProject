@@ -89,6 +89,9 @@ public class AchatOperation implements OperationEntiteInterface<Achat> {
                         rs.getInt("prix_achat"),rs.getInt("prix_total"),rs.getDate("date_achat").toLocalDate(),rs.getString("ristourne"));
                 list.add(achat);
             }
+            rs.close();
+            ps.close();
+            loadDataBase().close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

@@ -43,13 +43,16 @@ public class AchatControlleur extends HttpServlet {
             Date from = Date.valueOf(from2);
             List<Achat> list = achatOperation.searchEntite(from,to);
             request.setAttribute("defaultList",list);
+            request.setAttribute("dateFrom",from2.toString());
+            request.setAttribute("dateTo",to1.toString());
             this.getServletContext().getRequestDispatcher("/achatPage.jsp").forward(request, response);
         }
         if(event.equals("recherche")){
 
             String dateFrom = request.getParameter("from");
             String dateTo = request.getParameter("to");
-
+            request.setAttribute("dateFrom",dateFrom.toString());
+            request.setAttribute("dateTo",dateTo.toString());
             LocalDate start = LocalDate.parse(dateFrom,formatter1);
             LocalDate end  =  LocalDate.parse(dateTo,formatter1);
             dateFrom = start.toString();
@@ -73,6 +76,7 @@ public class AchatControlleur extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.getAttribute("username")!=null) {
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             AchatOperation achatOperation = new AchatOperation();
             LocalDate to1 = LocalDate.now();
             LocalDate from2 = to1.minusMonths(1);
@@ -80,6 +84,8 @@ public class AchatControlleur extends HttpServlet {
             Date from = Date.valueOf(from2);
             List<Achat> list = achatOperation.searchEntite(from,to);
             request.setAttribute("defaultList",list);
+            request.setAttribute("dateFrom",from2.format(formatter1).toString());
+            request.setAttribute("dateTo",to1.format(formatter1).toString());
             this.getServletContext().getRequestDispatcher("/achatPage.jsp").forward(request, response);
         }
         else {

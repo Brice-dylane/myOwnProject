@@ -1,4 +1,10 @@
-<%--
+<%@ page import="operations.ProduitOperation" %>
+<%@ page import="entites.Produit" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="operations.EmployeOperation" %>
+<%@ page import="entites.Employe" %><%--
   Created by IntelliJ IDEA.
   User: Brice Dylane
   Date: 07/10/2020
@@ -26,6 +32,14 @@
     <link href="css/style-responsive.css" rel="stylesheet">
     <link rel="stylesheet" href="lib/advanced-datatable/css/DT_bootstrap.css" />
 
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#quantite").on("input", function () {
+                $("#prix_total").val($(this).val()*$("#prix_achat").val());
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -153,6 +167,10 @@
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
     <!--main content start-->
+    <%
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String localDate = LocalDate.now().format(formatter);
+    %>
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
@@ -254,44 +272,62 @@
                 <form>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="produit" class="col-form-label">Produit:</label>
-                            <select class="form-control" name="produit" id="produit" required>
-                                <option>Jus</option>
-                                <option>Bierre</option>
-                                <option>Eau</option>
-                                <option>Vin</option>
-                                <option>Wisky</option>
+                            <label for="indexPro" class="col-form-label">Produit:</label>
+                            <select class="form-control" onchange="getSelectValuePro()" id="indexPro" required>
+                                <option value="0">--Selectionner un produit--</option>
+                                <%
+                                    ProduitOperation op = new ProduitOperation();
+                                    List<Produit> listP = op.entiteList();
+                                    for (Produit p:listP){
+                                %>
+                                <option value="<%out.println(p.getPrix_vente()+","+p.getId());%>"><%out.println(p.getNom()+" ("+p.getType()+")");%></option>
+                                <% } %>
                             </select>
+                            <input type="text" name="id_pro" id="idPro" style="display: none;">
+                        </div>
+                        <div class="form-group">
+                            <label for="prix_achat" class="col-form-label">Prix de vente:</label>
+                            <input type="text" class="form-control" value="0" name="prix_vente" id="prix_achat" required readonly>
                         </div>
                         <div class="form-group">
                             <label for="quantite" class="col-form-label">Quantité:</label>
                             <input type="number" class="form-control" name="quantite" id="quantite" required>
                         </div>
                         <div class="form-group">
+                            <label for="prix_total" class="col-form-label">Prix total:</label>
+                            <input type="text" class="form-control" value="0" name="prix_total" id="prix_total" required readonly>
+                        </div>
+                        <div class="form-group">
                             <label for="employe">Employé</label>
-                            <select class="form-control" name="employe" id="employe" required>
-                                <option>Chantale</option>
-                                <option>Adeline 12</option>
+                            <select class="form-control" name="employe" onchange="getSelectValueEmp()" id="employe" required>
+                                <option value="0">--Selectionner un employé--</option>
+                                <%
+                                    EmployeOperation operation = new EmployeOperation();
+                                    List<Employe> em = operation.entiteList();
+                                    for (Employe e:em){
+                                %>
+                                <option value="<%out.println(e.getId());%>"><%out.println(e.getNom()+" "+e.getPrenom());%></option>
+                                <% } %>
                             </select>
+                            <input type="text" name="id_emp" id="idEmp" style="display: none;">
                         </div>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="01-01-2014" class="input-append date dpYears">
+                                    <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="<%out.println(localDate);%>" class="input-append date dpYears">
                                         <label for="date" class="col-form-label">Date:</label>
-                                        <input type="text" readonly="" value="01-01-2014" name="date" id="date" class="form-control" required>
+                                        <input type="text" readonly="" value="<%out.println(localDate);%>" name="date" id="date" class="form-control" required>
                                         <span class="input-group-btn add-on">
-                            <button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
-                            </span>
+                                            <button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
+                                         </span>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                        <button type="submit" class="btn btn-primary">Commander</button>
                     </div>
                 </form>
             </div>
@@ -399,6 +435,24 @@
 <script type="text/javascript" src="lib/bootstrap-daterangepicker/moment.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
 <script src="lib/advanced-form-components.js"></script>
+
+<script type="text/javascript">
+
+    function getSelectValuePro()
+    {
+        var selectElmt = document.getElementById('indexPro');
+        var chaine = selectElmt.options[selectElmt.selectedIndex].value.split(',');
+        document.getElementById('prix_achat').value = chaine[0];
+        document.getElementById('idPro').value = chaine[1]
+    }
+
+    function getSelectValueEmp()
+    {
+        var selectElmt = document.getElementById('employe');
+        var chaine = selectElmt.options[selectElmt.selectedIndex].value;
+        document.getElementById('idEmp').value = chaine;
+    }
+</script>
 
 <script type="text/javascript">
     $(document).ready(function() {

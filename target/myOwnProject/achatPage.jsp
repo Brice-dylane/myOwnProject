@@ -185,6 +185,10 @@
                         <div class="adv-table">
                             <table class="table table-striped table-advance table-hover table-bordered" cellpadding="0" cellspacing="0" border="0" id="hidden-table-info">
                                     <div class="row">
+                                        <%
+                                            String from = (String) request.getAttribute("dateFrom");
+                                            String to = (String) request.getAttribute("dateTo");
+                                        %>
                                         <form method="post" action="Achats">
                                         <div class="col-md-3">
                                             <input type="text" value="recherche" name="envent" style="display: none;">
@@ -193,9 +197,9 @@
                                         <div class="col-md-4">
                                             <div class="input-group input-large" data-date-viewmode="years" data-date="01-01-2020" data-date-format="dd-mm-yyyy">
                                                 <span class="input-group-addon">du</span>
-                                                <input type="text" class="form-control dpd1 default-date-picker" name="from" required>
+                                                <input type="text" class="form-control dpd1 default-date-picker" name="from" value="<%out.println(from);%>" required>
                                                 <span class="input-group-addon">au</span>
-                                                <input type="text" class="form-control dpd2 default-date-picker" name="to" required>
+                                                <input type="text" class="form-control dpd2 default-date-picker" name="to" value="<%out.println(to);%>" required>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -328,10 +332,10 @@
                                 <div class="col-lg-4">
                                     <div data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="<%out.println(localDate);%>" class="input-append date dpYears">
                                         <label for="date" class="col-form-label">Date:</label>
-                                        <input type="text" readonly="" value="<%out.println(localDate);%>" name="date_achat" id="date" class="form-control">
+                                        <input type="text" readonly="" value="<%out.println(localDate);%>" name="date" id="date" class="form-control" required>
                                         <span class="input-group-btn add-on">
                                             <button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
-                                        </span>
+                                         </span>
                                     </div>
                                 </div>
                             </div>

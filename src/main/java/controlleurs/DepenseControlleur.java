@@ -26,7 +26,8 @@ public class DepenseControlleur extends HttpServlet {
         if(event.equals("recherche")){
             String dateFrom = request.getParameter("from");
             String dateTo = request.getParameter("to");
-
+            request.setAttribute("dateFrom",dateFrom);
+            request.setAttribute("dateTo",dateTo);
             LocalDate start = LocalDate.parse(dateFrom,formatter1);
             LocalDate end  =  LocalDate.parse(dateTo,formatter1);
             dateFrom = start.toString();
@@ -58,6 +59,8 @@ public class DepenseControlleur extends HttpServlet {
             Date from = Date.valueOf(from2);
             List<Depense> list = op.searchEntite(from,to);
             request.setAttribute("defaultList",list);
+            request.setAttribute("dateFrom",from2.toString());
+            request.setAttribute("dateTo",to1.toString());
 
             this.getServletContext().getRequestDispatcher("/depensePage.jsp").forward(request, response);
         }
@@ -74,6 +77,8 @@ public class DepenseControlleur extends HttpServlet {
             Date from = Date.valueOf(from2);
             List<Depense> list = op.searchEntite(from,to);
             request.setAttribute("defaultList",list);
+            request.setAttribute("dateFrom",from2.format(formatter1).toString());
+            request.setAttribute("dateTo",to1.format(formatter1).toString());
             this.getServletContext().getRequestDispatcher("/depensePage.jsp").forward(request, response);
         }
 
@@ -82,6 +87,7 @@ public class DepenseControlleur extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.getAttribute("username")!=null) {
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             DepenseOperation op = new DepenseOperation();
             LocalDate to1 = LocalDate.now();
             LocalDate from2 = to1.minusMonths(1);
@@ -89,6 +95,8 @@ public class DepenseControlleur extends HttpServlet {
             Date from = Date.valueOf(from2);
             List<Depense> list = op.searchEntite(from,to);
             request.setAttribute("defaultList",list);
+            request.setAttribute("dateFrom",from2.format(formatter1).toString());
+            request.setAttribute("dateTo",to1.format(formatter1).toString());
             this.getServletContext().getRequestDispatcher("/depensePage.jsp").forward(request, response);
         }
         else {
