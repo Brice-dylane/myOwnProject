@@ -269,8 +269,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form method="post" action="Commande">
                     <div class="modal-body">
+                        <input type="text" value="insert" name="envent" style="display: none;">
                         <div class="form-group">
                             <label for="indexPro" class="col-form-label">Produit:</label>
                             <select class="form-control" onchange="getSelectValuePro()" id="indexPro" required>

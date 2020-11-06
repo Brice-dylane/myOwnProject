@@ -55,6 +55,17 @@ public class Commande {
         this.prixVente = prixVente;
     }
 
+    public Commande(int idEmp, int idPro, int qte, int prixTotal, String etat, String isActive, LocalDate dateCom) {
+        this.idCom = idCom;
+        this.idEmp = idEmp;
+        this.idPro = idPro;
+        this.qte = qte;
+        this.prixTotal = prixTotal;
+        this.etat = etat;
+        this.isActive = isActive;
+        this.dateCom = dateCom;
+    }
+
     public int getIdCom() {
         return idCom;
     }

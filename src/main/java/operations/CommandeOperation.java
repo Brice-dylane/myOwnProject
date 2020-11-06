@@ -108,6 +108,9 @@ public class CommandeOperation implements OperationEntiteInterface<Commande>{
                 if (qte <= rs.getInt("qteTotal"))
                     isPosible = true;
             }
+            rs.close();
+            ps.close();
+            loadDataBase().close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
